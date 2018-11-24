@@ -147,6 +147,7 @@ class ModelTuner(object):
                 "time_elapsed": time_elapsed,
                 "search_params": search_params,
                 "score": score,
+                "best_score": self.best_score,
             }
         )
         return score, model

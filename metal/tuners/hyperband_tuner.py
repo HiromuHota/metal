@@ -193,6 +193,7 @@ class HyperbandTuner(ModelTuner):
         the train loop).
         """
         self._clear_state()
+        self.search_space = search_space
 
         # Loop over each bracket
         n_models_scored = 0
