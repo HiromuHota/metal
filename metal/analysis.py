@@ -157,7 +157,7 @@ def lf_summary(L, Y=None, lf_names=None, est_accs=None):
     d["Conflicts"] = Series(data=lf_conflicts(L), index=lf_names)
 
     if Y is not None:
-        col_names.extend(["Correct", "Incorrect", "Emp. Acc."])
+        col_names.extend(["TN", "FN", "TP", "FP", "Precision", "Recall", "Specificity", "NPV", "Emp. Acc."])
         confusions = [
             confusion_matrix(Y, L[:, i], pretty_print=False) for i in range(m)
         ]
@@ -166,8 +166,18 @@ def lf_summary(L, Y=None, lf_names=None, est_accs=None):
             conf.sum() - correct for conf, correct in zip(confusions, corrects)
         ]
         accs = lf_empirical_accuracies(L, Y)
-        d["Correct"] = Series(data=corrects, index=lf_names)
-        d["Incorrect"] = Series(data=incorrects, index=lf_names)
+        TN = [conf[0,0] for conf in confusions]
+        FP = [conf[0,1] for conf in confusions]
+        FN = [conf[1,0] for conf in confusions]
+        TP = [conf[1,1] for conf in confusions]
+        d["TN"] = Series(data=TN, index=lf_names)
+        d["FN"] = Series(data=FN, index=lf_names)
+        d["TP"] = Series(data=TP, index=lf_names)
+        d["FP"] = Series(data=FP, index=lf_names)
+        d["Precision"] = Series(data=np.divide(TP, np.add(TP, FP)), index=lf_names)
+        d["Recall"] = Series(data=np.divide(TP, np.add(TP, FN)), index=lf_names)
+        d["Specificity"] = Series(data=np.divide(TN, np.add(TN, FP)), index=lf_names)
+        d["NPV"] = Series(data=np.divide(TN, np.add(TN, FN)), index=lf_names)
         d["Emp. Acc."] = Series(data=accs, index=lf_names)
 
     if est_accs is not None:
