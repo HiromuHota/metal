@@ -167,8 +167,8 @@ def lf_summary(L, Y=None, lf_names=None, est_accs=None):
         ]
         accs = lf_empirical_accuracies(L, Y)
         TN = [conf[0,0] for conf in confusions]
-        FP = [conf[0,1] for conf in confusions]
-        FN = [conf[1,0] for conf in confusions]
+        FP = [conf[1,0] for conf in confusions]
+        FN = [conf[0,1] for conf in confusions]
         TP = [conf[1,1] for conf in confusions]
         d["TN"] = Series(data=TN, index=lf_names)
         d["FN"] = Series(data=FN, index=lf_names)
